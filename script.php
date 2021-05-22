@@ -1,4 +1,6 @@
 <?php 
+	session_start();
+	
 	$categorias = [];
 	$categorias[] = 'Infantil';
 	$categorias[] = 'Adolescente';
@@ -17,33 +19,38 @@
 	return 0;
 	*/
 	if(empty($nome)){
-		echo "O preenchimento do campo 'nome' é obrigatório.";
+		$_SESSION['erro'] = "O preenchimento do campo 'nome' é obrigatório.";
+		header('location: index.php');
 		return;
 	}
 	
 	if(strlen($nome) < 3){
-		echo "O nome deve conter, no mínimo, 3 caracteres.";
+		$_SESSION['erro'] = "O nome deve conter, no mínimo, 3 caracteres.";
+		header('location: index.php');
 		return;
 	}
 	
 	if(strlen($nome) > 40){
-		echo "O valor do campo nome excedeu o limite máximo de caracteres.";
+		$_SESSION['erro'] = "O valor do campo nome excedeu o limite máximo de caracteres.";
+		header('location: index.php');
 		return;
 	}
 	
 	if(!is_numeric($idade)){
-		echo "O campo idade aceita apenas valores numéricos.";
+		$_SESSION['erro'] = "O campo idade aceita apenas valores numéricos.";
+		header('location: index.php');
 		return;
 	}
 	
-	if($idade >= 18){
+	if($idade >= 60){
+		echo "$nome está inscrito na categoria <strong>$categorias[3]</strong>";
+	} else if($idade >= 18){
 		echo "$nome está inscrito na categoria <strong>$categorias[2]</strong>";
-		return;
 	} else if($idade >= 13){
 		echo "$nome está inscrito na categoria <strong>$categorias[1]</strong>";
-		return;
 	} else {
 		echo "$nome está inscrito na categoria <strong>$categorias[0]</strong>";
-		return;
 	}
+	
+	echo "<br /> <a href='index.php'>Cadastrar novo competidor.</a>";
 ?>
